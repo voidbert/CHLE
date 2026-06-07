@@ -21,12 +21,6 @@
 #
 # CONFIGURATION ------------------------------------------------------------------------------------
 
-# Space-separated list of benchmarks to test (LJ, RHODO)
-BENCHMARKS='LJ RHODO'
-
-# Best performing parallelism interface (run parallelism.sh first)
-PARALLELISM='OMP-NUMA'
-
 # Space-separated list of numbers of nodes to test
 NNODES='1 2 4 8 16 32'
 
@@ -40,12 +34,12 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 . "$SCRIPT_DIR/lib.sh"
 
 # Create output directory
-mkdir -p "$SCRIPT_DIR/results"
+mkdir -p "$SCRIPT_DIR/$RESULTS"
 
 # Perform strong scaling analyses using only 44 cores
-for benchmark in $BENCHMARKS; do
+for benchmark in 'LJ' 'RHODO'; do
     for nnodes in $NNODES; do
-        lammps "$PARALLELISM" "$nnodes" 44 "$benchmark" '' 'INFINIBAND' \
-            "$SCRIPT_DIR/$RESULTS/$benchmark-$PARALLELISM-$nnodes-44-NOSTORAGE-INFINIBAND"
+        lammps 'OMP-NUMA' "$nnodes" 44 "$benchmark" '' 'INFINIBAND' \
+            "$SCRIPT_DIR/$RESULTS/$benchmark-OMP-NUMA-$nnodes-44-NOSTORAGE-INFINIBAND"
     done
 done

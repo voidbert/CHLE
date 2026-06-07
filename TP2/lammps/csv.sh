@@ -29,14 +29,14 @@ RESULTS='results'
 # Build RegEx for decomposing file names into their constituent parts
 PARALLELISM_REGEX='MPI|OMP|OMP-NUMA|KOKKOS|KOKKOS-NUMA'
 BENCHMARK_REGEX='LJ|RHODO'
-STORAGE_REGEX='NOSTORAGE'
-NETWORK_REGEX='INFINIBAND'
+STORAGE_REGEX='NOSTORAGE|LOCAL|PFS-SINGLE|PFS-SHARDED'
+NETWORK_REGEX='INFINIBAND|IPoIB|ETHERNET'
 FILENAME_REGEX="($BENCHMARK_REGEX)-($PARALLELISM_REGEX)-([0-9]+)-([0-9]+)-($STORAGE_REGEX)-($NETWORK_REGEX).out"
 
 # Aggregate all LAMMPS throughputs in a single CSV file
 echo 'BENCHMARK,PARALLELISM,NNODES,NTASKSPERNODE,STORAGE,NETWORK,THROUGHPUT'
 
-cd "$RESULTS"
+cd "$RESULTS" || exit 1
 grep -Eor '[0-9.]+ timesteps/s'                                     |\
     sed -En "s/^$FILENAME_REGEX:([0-9.]+).*/\1,\2,\3,\4,\5,\6,\7/p" |\
     sort -V

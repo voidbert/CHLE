@@ -29,12 +29,6 @@
 #
 # CONFIGURATION ------------------------------------------------------------------------------------
 
-# Number of benchmarks to test
-BENCHMARKS='LJ RHODO'
-
-# Space-separated list of parallelism configurations to test
-PARALLELISMS='MPI OMP OMP-NUMA KOKKOS KOKKOS-NUMA'
-
 # Space-separated list of numbers of nodes to test
 NNODES='1 2 4 8 16 32'
 
@@ -48,11 +42,11 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 . "$SCRIPT_DIR/lib.sh"
 
 # Create output directory
-mkdir -p "$SCRIPT_DIR/results"
+mkdir -p "$SCRIPT_DIR/$RESULTS"
 
 # Run all parallelism configurations
-for benchmark in $BENCHMARKS; do
-    for parallelism in $PARALLELISMS; do
+for benchmark in 'LJ' 'RHODO'; do
+    for parallelism in 'MPI' 'OMP' 'OMP-NUMA' 'KOKKOS' 'KOKKOS-NUMA'; do
 
         # Skip scaled RHODO with KOKKOS - incompatible combination
         if [ "$benchmark" = 'RHODO' ] && (printf '%s\n' "$parallelism" | grep -q 'KOKKOS'); then
