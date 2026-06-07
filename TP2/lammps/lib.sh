@@ -27,13 +27,6 @@ SLURM_ACCOUNT='f202500010hpcvlabuminhoa'
 
 # SOURCE -------------------------------------------------------------------------------------------
 
-# Determine the path to the script
-if [ -z "$SLURM_JOB_ID" ]; then
-    SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-else
-    SCRIPT_DIR="$(dirname "$(scontrol show job "$SLURM_JOB_ID" | awk -F= '/Command=/{print $2}')")"
-fi
-
 # Runs a LAMMPS benchmark with the provided parallelism configuration.
 #
 # Arguments:
@@ -41,8 +34,8 @@ fi
 #   $1 - Parallelism method: 'MPI'         - Each node runs multiple MPI processes
 #                            'OMP'         - Each node runs one MPI process, which spawns multiple
 #                                            OpenMP threads
-#                            'OMP-NUMA'    - Each node runs one MPI process per NUMA node, each of
-#                                            which spawns multiple OpenMP threads
+#                            'OMP-NUMA'    - Each NUMA node runs one MPI process, each of which
+#                                            spawns multiple OpenMP threads
 #                            'KOKKOS'      - Similar to OMP, but using the Kokkos backend instead
 #                            'KOKKOS-NUMA' - Similar to OMP-NUMA, but using the Kokkos backend
 #                                            instead
