@@ -25,4 +25,5 @@ TP2/osu/*.out
 TP2/osu/*.csv
 
 # LAMMPS outputs
+TP2/lammps/inputs/*.tmp
 TP2/lammps/results/
