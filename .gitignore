@@ -27,3 +27,9 @@ TP2/osu/*.csv
 # LAMMPS outputs
 TP2/lammps/inputs/*.tmp
 TP2/lammps/results/
+
+# TP2 report temporary files
+TP2/report/data/parallelism/
+TP2/report/data/cores/
+TP2/report/data/storage/
+TP2/report/data/network/

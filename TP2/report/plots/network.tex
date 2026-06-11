@@ -1,0 +1,139 @@
+\begin{tikzpicture}
+    \begin{groupplot}[
+        % Group two plots
+        group style = {
+            group size        = 1 by 2,
+            vertical sep      = 0 cm,
+            x descriptions at = edge bottom
+        },
+        % Plot dimensions
+        width  = 0.95\columnwidth,
+        height = 4.2cm,
+        % Axes styling
+        xlabel             = {\# Nodes},
+        x tick label style = {font = \scriptsize},
+        y tick label style = {font = \scriptsize},
+        xlabel near ticks,
+        ylabel near ticks,
+        % X axis range
+        xmin = 0,
+        xmax = 33,
+        % Grid
+        xtick       = {1, 2, 4, 8, 16, 32},
+        xmajorgrids = true,
+        ymajorgrids = true,
+        grid style  = {
+            dashed,
+            gray!80
+        }
+    ]
+
+        % Top panel
+        \nextgroupplot [
+            % Label styles
+            y label style = {font = \small, align = center},
+            % Y axis
+            ylabel = {\textbf{LJ} \\ \footnotesize Throughput (it/s)},
+            ymin   = 0,
+            ymax   = 9.99,
+            % Legend
+            legend to name    = parallelism,
+            legend cell align = left,
+            legend style      = {
+                at                                    = {(0.5, 1.05)},
+                anchor                                = south,
+                legend columns                        = 4,
+                font                                  = \small,
+                /tikz/every even column/.append style = {column sep = 1ex}
+            }
+        ]
+
+        \addplot+ [
+            thick,
+            red!80!black,
+            mark      = x,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-INFINIBAND.csv};
+
+        \addplot+ [
+            thick,
+            ForestGreen,
+            mark      = +,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-IPoIB.csv};
+
+        \addplot+ [
+            thick,
+            blue!80!black,
+            mark      = Mercedes star,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-ETHERNET.csv};
+
+        \addplot [mark = none, black, thick, dotted] coordinates {(1, 0.275) (32, 8.8)};
+
+        \legend{Infiniband, \texttt{IPoIB}, Ethernet, \textnormal{Linear}};
+
+        % Bottom panel
+        \nextgroupplot [
+            % Label styles
+            x label style = {font = \small},
+            y label style = {font = \small, align = center},
+            % Y axis
+            ylabel = {\textbf{Rhodo} \\ \footnotesize Throughput (it/s)},
+            ymin   = 0,
+            ymax   = 9.99,
+            ytick  = {0, 2, 4, 6, 8, 10}
+        ]
+
+        \addplot+ [
+            thick,
+            red!80!black,
+            mark      = x,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-INFINIBAND.csv};
+
+        \addplot+ [
+            thick,
+            ForestGreen,
+            mark      = +,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-IPoIB.csv};
+
+        \addplot+ [
+            thick,
+            blue!80!black,
+            mark      = Mercedes star,
+            mark size = 2.5pt
+        ] table [
+            x       = NNODES,
+            y       = THROUGHPUT,
+            col sep = comma
+        ] {data/network/LJ-ETHERNET.csv};
+
+        \addplot [mark = none, black, thick, dotted] coordinates {(1, 0.275) (32, 10.24)};
+    \end{groupplot}
+
+    \node[anchor = south, yshift = 1pt] at (group c1r1.north) {
+        \pgfplotslegendfromname{parallelism}
+    };
+\end{tikzpicture}
